@@ -1,20 +1,17 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/view/history_view.dart';
-import 'package:flutter_application_1/view/map_view.dart';
-import 'package:flutter_application_1/view/settings_view.dart';
+import 'package:flutter_application_1/view/past_routes_screen.dart';
+import 'package:flutter_application_1/view/map_screen.dart';
+import 'package:flutter_application_1/view/settings_screen.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 
 class BottomBar extends StatefulWidget {
-  const BottomBar({Key? key}) : super(key: key);
-
+  const BottomBar({super.key});
   @override
-  _BottomBarState createState() => _BottomBarState();
+  BottomBarState createState() => BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class BottomBarState extends State<BottomBar> {
   final Color navigationBarColor = Colors.white;
   int selectedIndex = 1;
   late PageController pageController;
@@ -29,12 +26,13 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     /// [AnnotatedRegion<SystemUiOverlayStyle>] only for android black navigation bar. 3 button navigation control (legacy)
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(systemNavigationBarColor: navigationBarColor, systemNavigationBarIconBrightness: Brightness.dark),
+      value:
+          SystemUiOverlayStyle(systemNavigationBarColor: navigationBarColor, systemNavigationBarIconBrightness: Brightness.dark),
       child: Scaffold(
         body: PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
-          children: <Widget>[PastRoutesScreen(), MapScreen(), SettingsView()],
+          children: <Widget>[PastRoutesScreen(), MapScreen(), SettingsScreen()],
         ),
         bottomNavigationBar: WaterDropNavBar(
           backgroundColor: navigationBarColor,

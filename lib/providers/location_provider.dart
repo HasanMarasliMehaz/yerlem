@@ -31,6 +31,26 @@ class LocationProvider with ChangeNotifier {
     );
   }
 
+  Future<void> fetchRoutesByDateAndTime(
+    DateTime date,
+    TimeOfDay start,
+    TimeOfDay end,
+  ) async {
+    // Başlangıç ve bitiş timestamp’leri ISO formatta
+    final startTs = DateTime(date.year, date.month, date.day, start.hour, start.minute).toIso8601String();
+    final endTs = DateTime(date.year, date.month, date.day, end.hour, end.minute).toIso8601String();
+
+    final List<Map<String, dynamic>> routes = await _database!.query(
+      'routes',
+      where: 'timestamp BETWEEN ? AND ?',
+      whereArgs: [startTs, endTs],
+      orderBy: 'timestamp ASC',
+    );
+
+    _pastRoutes = routes;
+    notifyListeners();
+  }
+
   // Yeni bir rota eklemek
   Future<void> addRoute(double latitude, double longitude) async {
     final timestamp = DateTime.now().toIso8601String();
@@ -46,14 +66,14 @@ class LocationProvider with ChangeNotifier {
   // Tarihe göre geçmiş rotaları çekmek
   Future<void> fetchRoutesByDate(DateTime date) async {
     final formattedDate = date.toIso8601String().split('T').first;
-    final List<Map<String, dynamic>> routes = await _database!.query('routes', where: 'timestamp LIKE ?', whereArgs: ['$formattedDate%']);
+    final List<Map<String, dynamic>> routes =
+        await _database!.query('routes', where: 'timestamp LIKE ?', whereArgs: ['$formattedDate%']);
     _pastRoutes = routes;
     notifyListeners();
   }
 
   // Geçmiş rotaları almak
   List<Map<String, dynamic>> get pastRoutes => _pastRoutes;
-
 
   void showRouteOnMap(LocationDataModel location) {
     _selectedLocation = location;

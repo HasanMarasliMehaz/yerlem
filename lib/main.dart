@@ -22,7 +22,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Canlı Konum Takibi',
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.green),
+      theme: ThemeData(
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+          appBarTheme: AppBarTheme(
+            color: Colors.indigo,
+            centerTitle: true,
+            foregroundColor: Colors.white,
+          )),
       home: SplashScreen(), // Ana ekranımız MapScreen
     );
   }
